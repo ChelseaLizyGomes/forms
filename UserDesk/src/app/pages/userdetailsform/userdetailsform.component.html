@@ -70,6 +70,12 @@
               phone no</small
             >
           </div>
+          <div class="error-message">
+            <small *ngIf="phone?.dirty && phone?.invalid && ngForm.submitted">
+              <i class="fa fa-exclamation-triangle me-1"></i> Please enter your
+              phone number in correct format
+            </small>
+          </div>
         </div>
       </div>
 
@@ -92,6 +98,13 @@
               <i class="fa fa-exclamation-triangle me-1"></i>Please enter your
               email id</small
             >
+          </div>
+
+          <div class="error-message">
+            <small *ngIf="email?.dirty && email?.invalid && ngForm.submitted">
+              <i class="fa fa-exclamation-triangle me-1"></i> Please enter your
+              email in correct format
+            </small>
           </div>
         </div>
       </div>

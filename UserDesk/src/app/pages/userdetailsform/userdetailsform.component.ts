@@ -24,9 +24,9 @@ export class UserdetailsformComponent implements OnInit {
       lname: new FormControl(null, Validators.required),
       phone: new FormControl(null, [
         Validators.required,
-        Validators.pattern(/^\+61 \d{4} \d{3} \d{3}$/),
+        Validators.pattern(/^\+61\s?\d{4}\s?\d{3}\s?\d{3}$/),
       ]),
-      email: new FormControl(null, Validators.required),
+      email: new FormControl(null, [Validators.required, Validators.email]),
       address: new FormControl(null, Validators.required),
     });
   }
