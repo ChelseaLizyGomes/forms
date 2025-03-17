@@ -1,0 +1,127 @@
+<div class="app-wrapper">
+  <div class="container">
+    <form
+      [formGroup]="userForm"
+      (ngSubmit)="submitUserDetails()"
+      #ngForm="ngForm"
+    >
+      <h1 class="pt-4">User Details</h1>
+      <hr />
+      <div class="row">
+        <div class="col pt-3">
+          <label class="form-label" for="fname"> First Name </label>
+          <input
+            type="text"
+            placeholder="eg.James"
+            id="fname"
+            [ngClass]="{
+              'is-invalid': firstName?.invalid && ngForm.submitted
+            }"
+            [formControl]="$any(firstName)"
+            class="form-control"
+          />
+          <div class="error-message">
+            <small *ngIf="firstName?.errors?.['required'] && ngForm.submitted">
+              <i class="fa fa-exclamation-triangle me-1"></i>Please enter your
+              first name
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col pt-3">
+          <label class="form-label" for="fname">Last Name</label>
+          <input
+            id="lname"
+            placeholder="eg.Gomes"
+            [formControl]="$any(lastName)"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid': lastName?.invalid && ngForm.submitted
+            }"
+            type="text"
+          />
+          <div class="error-message">
+            <small *ngIf="lastName?.errors?.['required'] && ngForm.submitted">
+              <i class="fa fa-exclamation-triangle me-1"></i>Please enter your
+              last name
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col pt-3">
+          <label class="form-label" for="phone">Phone</label>
+          <input
+            type="tel"
+            placeholder="+61 8913 501 118"
+            id="phone"
+            [ngClass]="{
+              'is-invalid': phone?.invalid && ngForm.submitted
+            }"
+            [formControl]="$any(phone)"
+            class="form-control"
+          />
+          <div class="error-message">
+            <small *ngIf="phone?.errors?.['required'] && ngForm.submitted">
+              <i class="fa fa-exclamation-triangle me-1"></i>Please enter your
+              phone no</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col pt-3">
+          <label class="form-label" for="email">Email</label>
+          <input
+            type="email"
+            placeholder="email@gmail.com"
+            id="email"
+            [ngClass]="{
+              'is-invalid': email?.invalid && ngForm.submitted
+            }"
+            [formControl]="$any(email)"
+            class="form-control"
+          />
+
+          <div class="error-message">
+            <small *ngIf="email?.errors?.['required'] && ngForm.submitted">
+              <i class="fa fa-exclamation-triangle me-1"></i>Please enter your
+              email id</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col py-3">
+          <label class="form-label" for="address">Address</label>
+          <input
+            type="text"
+            placeholder="H.No 235, Florence street"
+            id="address"
+            [ngClass]="{
+              'is-invalid': address?.invalid && ngForm.submitted
+            }"
+            [formControl]="$any(address)"
+            class="form-control"
+          />
+
+          <div class="error-message">
+            <small *ngIf="address?.errors?.['required'] && ngForm.submitted">
+              <i class="fa fa-exclamation-triangle me-1"></i>Please enter your
+              street address</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="d-grid gap-2 col-6 mx-auto text-center pb-5 pt-3">
+        <button class="btn btn-lg btn-primary" type="submit">SUBMIT</button>
+      </div>
+    </form>
+  </div>
+</div>

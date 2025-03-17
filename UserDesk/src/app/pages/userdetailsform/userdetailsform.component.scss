@@ -1,0 +1,24 @@
+@import "../../../styles.scss";
+
+.app-wrapper {
+    color: white;
+    background-color: $secondary;
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    color: white;
+}
+
+.error-message {
+    color: $danger;
+}
+
+@media screen and (min-width:768px) {
+    .container {
+        display: block;
+        width: 50%;
+    }
+}
