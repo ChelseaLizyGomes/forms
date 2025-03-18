@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -7,6 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { FirebaseService } from '../../services/firebase.service';
 
 @Component({
   selector: 'app-userdetailsform',
@@ -17,11 +18,18 @@ import {
 })
 export class UserdetailsformComponent implements OnInit {
   userForm!: FormGroup;
+  private firebaseService = inject(FirebaseService);
 
   ngOnInit(): void {
     this.userForm = new FormGroup({
-      fname: new FormControl(null, Validators.required),
-      lname: new FormControl(null, Validators.required),
+      fname: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(2),
+      ]),
+      lname: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(2),
+      ]),
       phone: new FormControl(null, [
         Validators.required,
         Validators.pattern(/^\+61\s?\d{4}\s?\d{3}\s?\d{3}$/),
@@ -47,19 +55,16 @@ export class UserdetailsformComponent implements OnInit {
     return this.userForm.get('address');
   }
 
-  submitUserDetails(): void {
-    const formData = {
-      fname: this.userForm.get('fname')?.value,
-      lname: this.userForm.get('lname')?.value,
-      phone: this.userForm.get('phone')?.value,
-      email: this.userForm.get('email')?.value,
-      address: this.userForm.get('address')?.value,
-    };
+  async submitUserDetails(): Promise<void> {
     if (this.userForm.valid) {
-      console.log('User details  Submitted Sucessfully', this.userForm.value);
-      console.log('User Data is:', formData);
+      await this.firebaseService.addUser(this.userForm.value);
+
+      this.userForm.reset();
+      Object.keys(this.userForm.controls).forEach((key) => {
+        this.userForm.get(key)?.setErrors(null);
+      });
     } else {
-      console.log('User details  NOT Submitted !');
+      console.log('User details NOT submitted!');
     }
   }
 }

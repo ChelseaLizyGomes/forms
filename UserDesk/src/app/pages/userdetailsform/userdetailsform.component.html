@@ -26,6 +26,14 @@
               first name
             </small>
           </div>
+          <div class="error-message">
+            <small
+              *ngIf="!!(firstName?.errors?.['minlength']?.requiredLength) && ngForm.submitted"
+            >
+              <i class="fa fa-exclamation-triangle me-1"></i>First name must be
+              at least 2 characters long
+            </small>
+          </div>
         </div>
       </div>
 
@@ -46,6 +54,14 @@
             <small *ngIf="lastName?.errors?.['required'] && ngForm.submitted">
               <i class="fa fa-exclamation-triangle me-1"></i>Please enter your
               last name
+            </small>
+          </div>
+          <div class="error-message">
+            <small
+              *ngIf="!!(lastName?.errors?.['minlength']?.requiredLength) && ngForm.submitted"
+            >
+              <i class="fa fa-exclamation-triangle me-1"></i>Last name must be
+              at least 2 characters long
             </small>
           </div>
         </div>
