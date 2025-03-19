@@ -7,6 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { User } from '../../models/users';
 import { FirebaseService } from '../../services/firebase.service';
 
 @Component({
@@ -18,6 +19,7 @@ import { FirebaseService } from '../../services/firebase.service';
 })
 export class UserdetailsformComponent implements OnInit {
   userForm!: FormGroup;
+  users: User[] = [];
   private firebaseService = inject(FirebaseService);
 
   ngOnInit(): void {
@@ -30,15 +32,29 @@ export class UserdetailsformComponent implements OnInit {
         Validators.required,
         Validators.minLength(2),
       ]),
+      // phone: new FormControl(null, [
+      //   Validators.required,
+      //   Validators.pattern(/^\+61\s?\d{4}\s?\d{3}\s?\d{3}$/),
+      // ]),
       phone: new FormControl(null, [
         Validators.required,
-        Validators.pattern(/^\+61\s?\d{4}\s?\d{3}\s?\d{3}$/),
+        Validators.pattern(/^0\d*[A-Za-z]?\d*$/),
       ]),
-      email: new FormControl(null, [Validators.required, Validators.email]),
+      // email: new FormControl(null, [Validators.required, Validators.email]),
+      email: new FormControl(null, [
+        Validators.required,
+        Validators.pattern(/^[a-zA-Z]+@[a-zA-Z.%]+(\.[a-zA-Z])?$/),
+      ]),
       address: new FormControl(null, Validators.required),
     });
+
+    this.loadUsers();
   }
 
+  async loadUsers(): Promise<void> {
+    this.users = await this.firebaseService.getUsers();
+    console.log('Users array in Angular:', this.users);
+  }
   get firstName() {
     return this.userForm.get('fname');
   }
@@ -57,7 +73,16 @@ export class UserdetailsformComponent implements OnInit {
 
   async submitUserDetails(): Promise<void> {
     if (this.userForm.valid) {
-      await this.firebaseService.addUser(this.userForm.value);
+      const newUser: User = {
+        firstName: this.firstName?.value,
+        lastName: this.lastName?.value,
+        phone: this.phone?.value,
+        email: this.email?.value,
+        address: this.address?.value,
+      };
+      // await this.firebaseService.addUser(this.userForm.value);
+      await this.firebaseService.addUser(newUser);
+      this.loadUsers(); // Refresh user list
 
       this.userForm.reset();
       Object.keys(this.userForm.controls).forEach((key) => {
@@ -66,5 +91,34 @@ export class UserdetailsformComponent implements OnInit {
     } else {
       console.log('User details NOT submitted!');
     }
+  }
+
+  // Delete a user
+  async deleteUser(index: number) {
+    const userToDelete = this.users[index];
+    await this.firebaseService.deleteUser(userToDelete.id!);
+    this.loadUsers();
+  }
+
+  async deleteAllUsers(): Promise<void> {
+    if (
+      confirm(
+        'Are you sure you want to delete all users? This action cannot be undone.'
+      )
+    ) {
+      this.users = []; // Clear local array
+      await this.firebaseService.deleteAllUsers(); // Clear Firebase
+    }
+  }
+
+  updateEmail(user: User) {
+    const newEmail = 'edited@hotmail.com';
+    this.firebaseService
+      .updateUserEmail(user.id!, newEmail)
+      .then(() => {
+        console.log('Email updated successfully');
+        this.loadUsers(); // Refresh list after update
+      })
+      .catch((error) => console.error('Error updating email:', error));
   }
 }

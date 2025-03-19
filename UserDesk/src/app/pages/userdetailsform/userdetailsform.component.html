@@ -153,4 +153,50 @@
       </div>
     </form>
   </div>
+  <!-- Display List of Users -->
+  <h2 class="mt-5">User List</h2>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead class="table-warning">
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Phone #</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users; let i = index">
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.phone }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.address }}</td>
+          <td>
+            <button class="btn btn-info btn-sm" (click)="updateEmail(user)">
+              Edit Email
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="deleteUser(i)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="d-grid gap-2 col-6 mx-auto text-center pb-5 pt-3">
+    <button
+      class="btn btn-lg btn-danger"
+      type="button"
+      (click)="deleteAllUsers()"
+    >
+      DELETE ALL USERS
+    </button>
+  </div>
 </div>
