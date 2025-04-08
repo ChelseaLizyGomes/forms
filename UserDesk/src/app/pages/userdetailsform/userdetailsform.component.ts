@@ -27,6 +27,7 @@ export class UserdetailsformComponent implements OnInit {
       fname: new FormControl(null, [
         Validators.required,
         Validators.minLength(2),
+        Validators.pattern(/^(?!.*\bgoogle\b).+$/i),
       ]),
       lname: new FormControl(null, [
         Validators.required,
@@ -43,8 +44,9 @@ export class UserdetailsformComponent implements OnInit {
       // email: new FormControl(null, [Validators.required, Validators.email]),
       email: new FormControl(null, [
         Validators.required,
-        Validators.pattern(/^[a-zA-Z]+@[a-zA-Z.%]+(\.[a-zA-Z])?$/),
+        // Validators.pattern(/^(?!.*\bgmail\b).+$/i),
       ]),
+
       address: new FormControl(null, Validators.required),
     });
 
@@ -121,4 +123,19 @@ export class UserdetailsformComponent implements OnInit {
       })
       .catch((error) => console.error('Error updating email:', error));
   }
+
+  // updateUserDetails(user: User) {
+  //   const updatedFields = {
+  //     firstName: 'John',
+  //     phone: '0876543210',
+  //   };
+
+  //   this.firebaseService
+  //     .updateMultipleFields(user.id!, updatedFields)
+  //     .then(() => {
+  //       console.log('User details updated successfully');
+  //       this.loadUsers(); // Refresh list
+  //     })
+  //     .catch((error) => console.error('Error updating user details:', error));
+  // }
 }

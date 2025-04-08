@@ -30,8 +30,14 @@
             <small
               *ngIf="!!(firstName?.errors?.['minlength']?.requiredLength) && ngForm.submitted"
             >
-              <i class="fa fa-exclamation-triangle me-1"></i>First name must be
-              at least 2 characters long
+              <i class="fa fa-exclamation-triangle me-1"></i>Please enter
+              atleast 2 characters
+            </small>
+          </div>
+          <div class="error-message">
+            <small *ngIf="firstName?.errors?.['pattern'] && ngForm.submitted">
+              <i class="fa fa-exclamation-triangle me-1"></i>Google is not a
+              valid First name
             </small>
           </div>
         </div>
@@ -118,8 +124,8 @@
 
           <div class="error-message">
             <small *ngIf="email?.dirty && email?.invalid && ngForm.submitted">
-              <i class="fa fa-exclamation-triangle me-1"></i> Please enter your
-              email in correct format
+              <i class="fa fa-exclamation-triangle me-1"></i>Gmail is not a
+              valid email
             </small>
           </div>
         </div>

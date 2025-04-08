@@ -35,11 +35,17 @@ export class FirebaseService {
       const usersCollection = collection(this.firestore, 'users');
       const snapshot = await getDocs(usersCollection);
 
-      let users = snapshot.docs.map(
-        (doc) => ({ id: doc.id, ...doc.data() } as User)
-      );
+      let users: User[] = snapshot.docs.map((doc) => {
+        const id = doc.id;
 
-      // 🛠️ Sort users so newest appear first (assuming 'id' is sequential)
+        const user = {
+          id: id,
+          ...doc.data(),
+        };
+        return user as User;
+      });
+
+      // Sort users so newest appear first (assuming 'id' is sequential)
       users = users.sort((a, b) => (b.id! > a.id! ? 1 : -1));
 
       console.log('Fetched and sorted users:', users);
@@ -99,4 +105,16 @@ export class FirebaseService {
     const userDocRef = doc(this.firestore, 'users', userId);
     await updateDoc(userDocRef, { email: newEmail });
   }
+
+  // async updateMultipleFields(
+  //   userId: string,
+  //   updatedFields: Partial<User>
+  // ): Promise<void> {
+  //   this.users = this.users.map((user) =>
+  //     user.id === userId ? { ...user, ...updatedFields } : user
+  //   );
+
+  //   const userDocRef = doc(this.firestore, 'users', userId);
+  //   await updateDoc(userDocRef, updatedFields);
+  // }
 }
